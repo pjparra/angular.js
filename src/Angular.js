@@ -213,7 +213,8 @@ function forEach(obj, iterator, context) {
   if (obj) {
     if (isFunction(obj)){
       for (key in obj) {
-        if (key != 'prototype' && key != 'length' && key != 'name' && obj.hasOwnProperty(key)) {
+        // This uglyness around hasOwnProperty is for IE8 to work properly (hasOwnProperty doesn't exist)
+        if (key != 'prototype' && key != 'length' && key != 'name' && (obj.hasOwnProperty && obj.hasOwnProperty(key) || Object.prototype.hasOwnProperty.call(obj, key))) {
           iterator.call(context, obj[key], key);
         }
       }
