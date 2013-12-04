@@ -141,7 +141,8 @@ function $LogProvider(){
       var console = $window.console || {},
           logFn = console[type] || console.log || noop;
 
-      if (logFn.apply) {
+      // IE8 breaks if we try to call apply on logFn, which happens to be an object
+      if (!isObject(logFn) && logFn.apply) {
         return function() {
           var args = [];
           forEach(arguments, function(arg) {
